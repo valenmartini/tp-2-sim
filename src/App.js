@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Histograma } from "./components/Histograma/Histograma";
+import { Inicio } from "./components/vistas/Inicio";
+import { Uniforme } from "./components/vistas/Uniforme";
+import { Normal } from "./components/vistas/Normal";
+import { Exponencial } from "./components/vistas/Exponencial";
+import { useState } from "react";
 
 function App() {
+  const [dist, setDist] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Inicio dist={dist} setDist={setDist} />
+      {dist && (
+        <>
+          {dist == 0 && (
+            <>
+              <Uniforme />
+            </>
+          )}
+          {dist == 1 && (
+            <>
+              <Normal />
+            </>
+          )}
+          {dist == 2 && (
+            <>
+              <Exponencial />
+            </>
+          )}
+        </>
+      )}
+    </>
   );
 }
 
