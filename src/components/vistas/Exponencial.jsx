@@ -7,7 +7,7 @@ export const Exponencial = () => {
   useEffect(() => {}, [muestra]);
   return (
     <div>
-      <DistribucionForm setValue={setMuestra} />
+      {/* <DistribucionForm setValue={setMuestra} /> */}
     </div>
   );
 };
