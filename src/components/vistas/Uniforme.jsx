@@ -12,7 +12,7 @@ export const Uniforme = () => {
 
   const generarDistribucion = () => {
     console.log(muestra);
-    if (muestra <= 1000000 && valoresUniformes.A < valoresUniformes.B) {
+    if (muestra <= 1000000 && muestra > 0 && valoresUniformes.A < valoresUniformes.B) {
       setDistribucion(
         generarDistribucionUniforme(
           muestra,
@@ -22,8 +22,7 @@ export const Uniforme = () => {
       );
     }
   };
-
-  console.log(distribucion);
+  
   return (
     <>
       <DistribucionForm>

@@ -3,11 +3,26 @@ import React, { useEffect, useState } from "react";
 import Histogram from "react-chart-histogram";
 
 const inicializarHistograma = (data, intervalos, setAmplitudIntervalos) => {
-  const max = Math.max(...data);
-  const min = Math.min(...data);
+  let max = 0;
+  let min = 0;
+  if (data.length > 500000) {
+    const max1 = Math.max(...data.slice(0, Number(data.length / 2).toFixed(0)));
+    const max2 = Math.max(
+      ...data.slice(Number(data.length / 2).toFixed(0), data.length)
+    );
+    max = max1 >= max2 ? max1 : max2;
+    const min1 = Math.min(...data.slice(0, Number(data.length / 2).toFixed(0)));
+    const min2 = Math.min(
+      ...data.slice(Number(data.length / 2).toFixed(0), data.length)
+    );
+    min = min1 <= min2 ? min1 : min2;
+  } else {
+    max = Math.max(...data);
+    min = Math.min(...data);
+  }
   const recorrido = Number(max) - Number(min);
   const amplitud = Number(Number(recorrido) / Number(intervalos));
-  setAmplitudIntervalos(amplitud);
+  //setAmplitudIntervalos(amplitud);
   const interv = crearIntervalos(data, intervalos, amplitud, min);
   return interv;
 };
@@ -59,13 +74,13 @@ export const Histograma = (props) => {
   useEffect(() => {
     setDataHistograma(
       inicializarHistograma(data, intervalos, setAmplitudIntervalos)
-    )
-  },[intervalos])
+    );
+  }, [intervalos]);
 
   return (
     <>
       {dataHistograma && (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Histogram
             xLabels={dataHistograma.map((data) =>
               (Number(data.start + data.end) / 2).toFixed(4)
@@ -83,7 +98,7 @@ export const Histograma = (props) => {
               { value: 10, label: "10 intervalos" },
               { value: 15, label: "15 intervalos" },
               { value: 20, label: "20 intervalos" },
-              { value: 25, label: "25 intervalos" }
+              { value: 25, label: "25 intervalos" },
             ]}
           />
         </div>
