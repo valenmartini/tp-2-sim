@@ -4,7 +4,7 @@ import { generarDistribucionUniforme } from "../Procesos/calculoUniforme";
 import { Button, Form, Input } from "antd";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablaResultados/TablaResultados";
-import { exportToCsv } from "../ExportadorCVS/ExportadorCVS";
+import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
 
 export const Uniforme = () => {
   const [muestra, setMuestra] = useState(0);
@@ -59,7 +59,7 @@ export const Uniforme = () => {
         <Form.Item style={{ position: 'absolute', right: '0' }}>
           {distribucion && (
             <Button type="link" onClick={()=>{exportToCsv(distribucion)}}>
-              Exportar CVS
+              Exportar CSV
             </Button>
           )}
           <Button type="primary" onClick={generarDistribucion}>

@@ -4,7 +4,7 @@ import { Button, Form, Input } from "antd";
 import { generarDistribucionNormal } from "../Procesos/calculoNormal";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablaResultados/TablaResultados";
-import { exportToCsv } from "../ExportadorCVS/ExportadorCVS";
+import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
 
 export const Normal = () => {
   const [muestra, setMuestra] = useState(0);
@@ -94,7 +94,7 @@ export const Normal = () => {
                   exportToCsv(distribucion);
                 }}
               >
-                Exportar CVS
+                Exportar CSV
               </Button>
             )}
             <Button type="primary" onClick={generarDistribucion}>

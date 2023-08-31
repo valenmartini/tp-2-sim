@@ -4,7 +4,7 @@ import { Button, Form, Input } from "antd";
 import { generarDistribucionExponencial } from "../Procesos/calculoExponencial";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablaResultados/TablaResultados";
-import { exportToCsv } from "../ExportadorCVS/ExportadorCVS";
+import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
 
 export const Exponencial = () => {
   const [muestra, setMuestra] = useState(0);
@@ -33,7 +33,7 @@ export const Exponencial = () => {
         <Form.Item style={{ position: 'absolute', right: '0' }}>
           {distribucion && (
             <Button type="link" onClick={()=>{exportToCsv(distribucion)}}>
-              Exportar CVS
+              Exportar CSV
             </Button>
           )}
           <Button type="primary" onClick={generarDistribucion}>

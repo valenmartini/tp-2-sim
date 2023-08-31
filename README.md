@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# Generador de Numeros Aleatorios
+Este proyecto tiene como fin el entregar un aplicativo que genere numeros aleatorios que posean distintas distribuciones.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Inicializacion del proyecto
 
-## Available Scripts
+Luego de clonarlo a un repositorio local, es necesario como todo proyecto de Javascript ejecutar los siguientes comandos:
 
-In the project directory, you can run:
+### `npm install`
+Instala las dependencias necesarias para el correcto funcionamiento.
 
-### `npm start`
+### `npm run start`
+Inicia la aplicación en modo desarrollo, abriendo una ventana con un navegador web y refrescando automáticamente.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Funciones de la Aplicacion
+Una vez dentro de la aplicacion podras elegir entre 3 diferentes distribuciones de numeros aleatorios:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Uniforme
+Genera un numero aleatorio en una determinada cantidad de veces, ingresada por teclado, con un valor minimo y maximo tambien ingresable por teclado.
 
-### `npm test`
+### Normal
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Genera una cantidad de numeros aleatorios con distribucion normal, con una media y desviacion estandar ingresada por el usuario.
 
-### `npm run build`
+### Exponencial
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Genera una cantidad de numeros aleatorios con distribucion exponencial con una media ingresada por el usuario.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Resultados
+Los resultados de la generacion de cualquiera de las distribuciones se visualizan en un histograma y en una tabla de resultados. Se le da la libertad al usuario de elegir la cantidad de intervalos a visualizar.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Tambien es posible descargar los numeros generados con un formato CSV
