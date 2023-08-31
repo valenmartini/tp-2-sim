@@ -4,6 +4,7 @@ import { generarDistribucionUniforme } from "../Procesos/calculoUniforme";
 import { Button, Form, Input } from "antd";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablaResultados/TablaResultados";
+import { exportToCsv } from "../ExportadorCVS/ExportadorCVS";
 
 export const Uniforme = () => {
   const [muestra, setMuestra] = useState(0);
@@ -54,11 +55,18 @@ export const Uniforme = () => {
             }
           />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <div style={{position: 'relative', height: '40px'}}>
+        <Form.Item style={{ position: 'absolute', right: '0' }}>
+          {distribucion && (
+            <Button type="link" onClick={()=>{exportToCsv(distribucion)}}>
+              Exportar CVS
+            </Button>
+          )}
           <Button type="primary" onClick={generarDistribucion}>
             Generar Distribucion
           </Button>
         </Form.Item>
+        </div>
       </DistribucionForm>
       {distribucion && (
         <div>

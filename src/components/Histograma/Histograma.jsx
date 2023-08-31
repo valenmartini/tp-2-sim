@@ -1,6 +1,7 @@
 import { Select } from "antd";
 import React, { useEffect, useState } from "react";
 import Histogram from "react-chart-histogram";
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 
 const inicializarHistograma = (data, intervalos, setAmplitudIntervalos) => {
   let max = 0;
@@ -23,8 +24,20 @@ const inicializarHistograma = (data, intervalos, setAmplitudIntervalos) => {
   const recorrido = Number(max) - Number(min);
   const amplitud = Number(Number(recorrido) / Number(intervalos));
   //setAmplitudIntervalos(amplitud);
-  const interv = crearIntervalos(data, intervalos, amplitud, min);
-  return interv;
+  let interv = crearIntervalos(data, intervalos, amplitud, min);
+
+  const interval = interv.map((interval) => {
+    return {
+      frecuencia: interval.count,
+      "marca de clase": Number(
+        ((interval.end + interval.start) / 2).toFixed(4)
+      ),
+      start: interval.start,
+      end: interval.end
+    };
+  });
+  console.log(interval);
+  return interval;
 };
 
 const crearIntervalos = (data, intervalos, amplitud, min) => {
@@ -37,18 +50,35 @@ const crearIntervalos = (data, intervalos, amplitud, min) => {
     interv.push({
       start: start,
       end: start + amplitud,
-      count: cargarIntervalo(data, start, start + amplitud),
+      count: cargarIntervalo(i, data, start, start + amplitud),
     });
   }
   return interv;
 };
 
-const cargarIntervalo = (data, min, max) => {
-  return data.reduce(
-    (counter, value) => (value >= min && value <= max ? counter + 1 : counter),
-    0
-  );
+const cargarIntervalo = (index, data, min, max) => {
+  return data.reduce((counter, value) => {
+    return index == 0
+      ? value >= min && value <= max
+        ? counter + 1
+        : counter
+      : value > min && value <= max
+      ? counter + 1
+      : counter;
+  }, 0);
 };
+
+const CustomTooltip = ({payload, label, active}) => {
+  if(active) {
+    console.log(payload);
+    return(
+      <div style={{backgroundColor: "rgb(255, 255, 255)",
+        border: "1px solid rgb(204, 204, 204)", padding: '10px', whiteSpace: 'nowrap'}}>
+      <p className="label">{`intervalo (${payload[0].payload.start.toFixed(4) +" - "+ payload[0].payload.end.toFixed(4)}] : ${payload[0].value}`}</p>
+    </div>
+    )
+  }
+}
 
 export const Histograma = (props) => {
   const [data, setData] = useState(props.distribucion);
@@ -77,19 +107,38 @@ export const Histograma = (props) => {
     );
   }, [intervalos]);
 
+  const prueba = () => {
+    let data = [...dataHistograma];
+    data.push({ count: 0 });
+    return data.map((data) => data.count);
+  };
+
   return (
     <>
       {dataHistograma && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Histogram
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "40px",
+          }}
+        >
+          <BarChart width={1320} height={500} data={dataHistograma}>
+            <XAxis dataKey="marca de clase" />
+            <YAxis />
+            <Tooltip  content={<CustomTooltip/>}  />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <Bar dataKey="frecuencia" fill="#8884d8" barSize={30} />
+          </BarChart>
+          {/*           <Histogram
             xLabels={dataHistograma.map((data) =>
               (Number(data.start + data.end) / 2).toFixed(4)
             )}
-            yValues={dataHistograma.map((data) => data.count)}
+            yValues={prueba()}
             width="810"
             height="500"
             options={options}
-          />
+          /> */}
           <Select
             defaultValue={10}
             style={{ width: 160 }}

@@ -4,6 +4,7 @@ import { Button, Form, Input } from "antd";
 import { generarDistribucionNormal } from "../Procesos/calculoNormal";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablaResultados/TablaResultados";
+import { exportToCsv } from "../ExportadorCVS/ExportadorCVS";
 
 export const Normal = () => {
   const [muestra, setMuestra] = useState(0);
@@ -18,10 +19,12 @@ export const Normal = () => {
       media > 0 &&
       valores.desviacion > 0
     ) {
-      setDistribucion(generarDistribucionNormal(muestra, media, valores.desviacion));
+      setDistribucion(
+        generarDistribucionNormal(muestra, media, valores.desviacion)
+      );
     }
   };
-console.log(distribucion);
+  console.log(distribucion);
   const handleChangeDesviacion = (e) => {
     const { value } = e.target;
     const varianz = Number(Math.pow(Number(value), 2));
@@ -80,11 +83,18 @@ console.log(distribucion);
             onChange={handleChangeVarianza}
           />
         </div>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <div style={{position: 'relative', height: '40px'}}>
+        <Form.Item style={{ position: 'absolute', right: '0' }}>
+          {distribucion && (
+            <Button type="link" onClick={()=>{exportToCsv(distribucion)}}>
+              Exportar CVS
+            </Button>
+          )}
           <Button type="primary" onClick={generarDistribucion}>
             Generar Distribucion
           </Button>
         </Form.Item>
+        </div>
       </DistribucionForm>
       {distribucion && (
         <div>
