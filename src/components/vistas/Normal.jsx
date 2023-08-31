@@ -17,16 +17,17 @@ export const Normal = () => {
       muestra <= 1000000 &&
       muestra > 0 &&
       media > 0 &&
-      valores.desviacion > 0
+      Number(valores.desviacion) > 0
     ) {
       setDistribucion(
-        generarDistribucionNormal(muestra, media, valores.desviacion)
+        generarDistribucionNormal(muestra, media, Number(valores.desviacion))
       );
     }
   };
-  console.log(distribucion);
+
   const handleChangeDesviacion = (e) => {
-    const { value } = e.target;
+    let { value } = e.target;
+    value = value.replace(",",".")
     const varianz = Number(Math.pow(Number(value), 2));
     const parsedValue = parseFloat(varianz);
     const hasDecimals = parsedValue % 1 !== 0;
@@ -35,12 +36,13 @@ export const Normal = () => {
       : Number(parsedValue);
     setValores({
       varianza: varianzaPaseada,
-      desviacion: Number(value),
+      desviacion: value,
     });
   };
 
   const handleChangeVarianza = (e) => {
-    const { value } = e.target;
+    let { value } = e.target;
+    value = value.replace(",",".")
     const desv = Number(Math.sqrt(Number(value)));
     const parsedValue = parseFloat(desv);
     const hasDecimals = parsedValue % 1 !== 0;
@@ -48,7 +50,7 @@ export const Normal = () => {
       ? Number(parsedValue.toFixed(4))
       : Number(parsedValue);
     setValores({
-      varianza: Number(value),
+      varianza: value,
       desviacion: desviacionParseada,
     });
   };
@@ -83,17 +85,22 @@ export const Normal = () => {
             onChange={handleChangeVarianza}
           />
         </div>
-        <div style={{position: 'relative', height: '40px'}}>
-        <Form.Item style={{ position: 'absolute', right: '0' }}>
-          {distribucion && (
-            <Button type="link" onClick={()=>{exportToCsv(distribucion)}}>
-              Exportar CVS
+        <div style={{ position: "relative", height: "40px" }}>
+          <Form.Item style={{ position: "absolute", right: "0" }}>
+            {distribucion && (
+              <Button
+                type="link"
+                onClick={() => {
+                  exportToCsv(distribucion);
+                }}
+              >
+                Exportar CVS
+              </Button>
+            )}
+            <Button type="primary" onClick={generarDistribucion}>
+              Generar Distribucion
             </Button>
-          )}
-          <Button type="primary" onClick={generarDistribucion}>
-            Generar Distribucion
-          </Button>
-        </Form.Item>
+          </Form.Item>
         </div>
       </DistribucionForm>
       {distribucion && (
