@@ -8,7 +8,7 @@ export const DistribucionForm = (props) => {
       <div
         style={{
           margin: '15pt',
-          marginTop: '40pt',
+          marginTop: '30pt',
           padding: "40pt",
           paddingTop: '5pt',
           paddingBottom: "10pt",
