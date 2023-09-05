@@ -1,9 +1,8 @@
 import { Select } from "antd";
 import React, { useEffect, useState } from "react";
-import Histogram from "react-chart-histogram";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 
-const inicializarHistograma = (data, intervalos, setAmplitudIntervalos) => {
+const inicializarHistograma = (data, intervalos) => {
   let max = 0;
   let min = 0;
   if (data.length > 500000) {
@@ -83,17 +82,11 @@ const CustomTooltip = ({payload, label, active}) => {
 export const Histograma = (props) => {
   const [data, setData] = useState(props.distribucion);
   const [intervalos, setIntervalos] = useState(10);
-  const [amplitudIntervalo, setAmplitudIntervalos] = useState();
   const [dataHistograma, setDataHistograma] = useState();
-  const options = {
-    xLabel: "az",
-    fillColor: "#00B3C9",
-    strokeColor: "#00B3C9",
-  };
 
   useEffect(() => {
     setDataHistograma(
-      inicializarHistograma(data, intervalos, setAmplitudIntervalos)
+      inicializarHistograma(data, intervalos)
     );
   }, [data]);
 
@@ -103,15 +96,9 @@ export const Histograma = (props) => {
 
   useEffect(() => {
     setDataHistograma(
-      inicializarHistograma(data, intervalos, setAmplitudIntervalos)
+      inicializarHistograma(data, intervalos)
     );
   }, [intervalos]);
-
-  const prueba = () => {
-    let data = [...dataHistograma];
-    data.push({ count: 0 });
-    return data.map((data) => data.count);
-  };
 
   return (
     <>
@@ -128,17 +115,8 @@ export const Histograma = (props) => {
             <YAxis />
             <Tooltip  content={<CustomTooltip/>}  />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Bar dataKey="frecuencia" fill="#8884d8" barSize={30} />
+            <Bar dataKey="frecuencia" fill="#8884d8" barSize={120} />
           </BarChart>
-          {/*           <Histogram
-            xLabels={dataHistograma.map((data) =>
-              (Number(data.start + data.end) / 2).toFixed(4)
-            )}
-            yValues={prueba()}
-            width="810"
-            height="500"
-            options={options}
-          /> */}
           <Select
             defaultValue={10}
             style={{ width: 160 }}
