@@ -1,23 +1,57 @@
-import { Menu } from 'antd'
-import React from 'react'
+import { Menu } from "antd";
+import React, { useEffect, useState } from "react";
+import { redirect, useNavigate } from "react-router";
 
 const items = [
-    {
-      label: 'Uniforme',
-      key: 0
-    },
-    {
-      label: 'Normal',
-      key: 1
-    },
-    {
-        label: 'Exponencial',
-        key: 2
+  {
+    label: "Inicio",
+    key: "inicio",
+  },
+  {
+    label: "Trabajo Practico 2",
+    key: "tp2",
+    children: [
+      {
+        label: "Uniforme",
+        key: "tp2-uniforme",
       },
-  ];
+      {
+        label: "Normal",
+        key: "tp2-normal",
+      },
+      {
+        label: "Exponencial",
+        key: "tp2-exponencial",
+      },
+    ],
+  },
+  {
+    label: 'Trabajo Practico 3',
+    key: 'tp3',
+    disabled: true
+  }
+];
 
-export const MenuBar = (props) => {
+const URI_SELECTOR = {
+  ["inicio"]: "/",
+  ["tp2-uniforme"]: "/tp-2/uniforme",
+  ["tp2-normal"]: "/tp-2/normal",
+  ["tp2-exponencial"]: "/tp-2/exponencial",
+};
+
+export const MenuBar = () => {
+  const navigate = useNavigate();
+  const [dist, setDist] = useState(null);
+
   return (
-    <Menu onClick={(e)=> props.setDist(e.key)} selectedKeys={props.dist} mode="horizontal" items={items} />
-  )
-}
+    <Menu
+      onClick={(e) => {
+        setDist(e.key);
+        navigate(URI_SELECTOR[e.key]);
+      }}
+      selectedKeys={dist}
+      mode="horizontal"
+      items={items}
+    />
+  );
+};

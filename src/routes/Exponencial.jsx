@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
+import { DistribucionForm } from "../components/DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
-import { generarDistribucionExponencial } from "../Procesos/CalculoDistribuciones/calculoExponencial";
-import { Histograma } from "../Histograma/Histograma";
-import { TablaResultados } from "../TablasDatos/TablaResultados/TablaResultados";
-import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
-import { AccordionTables } from "../AccordionTables/AccordionTables";
+import { exportToCsv } from "../components/ExportadorCSV/ExportadorCSV";
+import { AccordionTables } from "../components/AccordionTables/AccordionTables";
+import { Histograma } from "../components/Histograma/Histograma";
+import { generarDistribucionExponencial } from '../components/Procesos/CalculoDistribuciones/calculoExponencial'
 
 export const Exponencial = () => {
   const [muestra, setMuestra] = useState(0);

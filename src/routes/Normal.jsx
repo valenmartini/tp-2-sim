@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
-import { Histograma } from "../Histograma/Histograma";
-import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
-import { AccordionTables } from "../AccordionTables/AccordionTables";
-import { generarDistribucionNormal } from "../Procesos/CalculoDistribuciones/calculoNormal";
+import { DistribucionForm } from "../components/DistribucionForm/DistribucionForm";
+import { AccordionTables } from "../components/AccordionTables/AccordionTables";
+import { Histograma } from "../components/Histograma/Histograma";
+import { exportToCsv } from "../components/ExportadorCSV/ExportadorCSV";
+import { generarDistribucionNormal } from "../components/Procesos/CalculoDistribuciones/calculoNormal";
 
 export const Normal = () => {
   const [muestra, setMuestra] = useState(0);

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
-import { Histograma } from "../Histograma/Histograma";
-import { TablaResultados } from "../TablasDatos/TablaResultados/TablaResultados";
-import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
-import { AccordionTables } from "../AccordionTables/AccordionTables";
-import { generarDistribucionUniforme } from "../Procesos/CalculoDistribuciones/calculoUniforme";
+import { exportToCsv } from "../components/ExportadorCSV/ExportadorCSV";
+import { AccordionTables } from "../components/AccordionTables/AccordionTables";
+import { Histograma } from "../components/Histograma/Histograma";
+import { generarDistribucionUniforme } from "../components/Procesos/CalculoDistribuciones/calculoUniforme";
+import { DistribucionForm } from "../components/DistribucionForm/DistribucionForm";
 
 export const Uniforme = () => {
   const [muestra, setMuestra] = useState(0);

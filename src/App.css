@@ -51,6 +51,16 @@ label {
   color: #61dafb;
 }
 
+.jumbotron {
+  display: inline-block;
+  background-color: #e0ecfc;
+  padding: 20pt;
+  padding-right: 15%;
+  
+  border: 1px solid #1677FF;
+  border-radius: 15px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
