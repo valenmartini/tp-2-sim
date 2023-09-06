@@ -16,7 +16,7 @@ const items = [
       },
   ];
 
-export const Inicio = (props) => {
+export const MenuBar = (props) => {
   return (
     <Menu onClick={(e)=> props.setDist(e.key)} selectedKeys={props.dist} mode="horizontal" items={items} />
   )
