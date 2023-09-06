@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
-import { generarDistribucionExponencial } from "../Procesos/calculoExponencial";
+import { generarDistribucionExponencial } from "../Procesos/CalculoDistribuciones/calculoExponencial";
 import { Histograma } from "../Histograma/Histograma";
 import { TablaResultados } from "../TablasDatos/TablaResultados/TablaResultados";
 import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
