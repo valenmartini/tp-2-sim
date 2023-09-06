@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
-import { generarDistribucionExponencial } from "../Procesos/calculoExponencial";
+import { generarDistribucionExponencial } from "../Procesos/CalculoDistribuciones/calculoExponencial";
 import { Histograma } from "../Histograma/Histograma";
-import { TablaResultados } from "../TablaResultados/TablaResultados";
+import { TablaResultados } from "../TablasDatos/TablaResultados/TablaResultados";
 import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
+import { AccordionTables } from "../AccordionTables/AccordionTables";
 
 export const Exponencial = () => {
   const [muestra, setMuestra] = useState(0);
   const [media, setMedia] = useState();
   const [distribucion, setDistribucion] = useState();
+  const [frecuencias, setFrecuencias] = useState();
 
   const generarDistribucion = () => {
     if (muestra <= 1000000 && muestra > 0 && media) {
@@ -19,8 +21,8 @@ export const Exponencial = () => {
 
   return (
     <div>
-      <Row gutter={16} justify={"center"} style={{marginTop: '15pt'}}>
-        <DistribucionForm title='Exponencial'>
+      <Row gutter={16} justify={"center"} style={{ marginTop: "15pt" }}>
+        <DistribucionForm title="Exponencial">
           <Form.Item label="Tamaño Muestra" name="Tamaño Muestra">
             <Input
               value={muestra}
@@ -48,11 +50,20 @@ export const Exponencial = () => {
             </Form.Item>
           </div>
         </DistribucionForm>
-        {distribucion && <TablaResultados data={distribucion} />}
+        {distribucion && frecuencias && (
+          <AccordionTables
+            distribucion={distribucion}
+            frecuencias={frecuencias}
+          />
+        )}
       </Row>
       {distribucion && (
         <Row>
-          <Histograma distribucion={distribucion} />
+          <Histograma
+            distribucion={distribucion}
+            frecuencias={frecuencias}
+            setFrecuencias={setFrecuencias}
+          />
         </Row>
       )}
     </div>
