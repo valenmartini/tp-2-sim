@@ -3,14 +3,16 @@ import { DistribucionForm } from "../DistribucionForm/DistribucionForm";
 import { Button, Form, Input, Row } from "antd";
 import { generarDistribucionNormal } from "../Procesos/calculoNormal";
 import { Histograma } from "../Histograma/Histograma";
-import { TablaResultados } from "../TablaResultados/TablaResultados";
+import { TablaResultados } from "../TablasDatos/TablaResultados/TablaResultados";
 import { exportToCsv } from "../ExportadorCSV/ExportadorCSV";
+import { AccordionTables } from "../AccordionTables/AccordionTables";
 
 export const Normal = () => {
   const [muestra, setMuestra] = useState(0);
   const [media, setMedia] = useState();
   const [valores, setValores] = useState({ desviacion: 0, varianza: 0 });
   const [distribucion, setDistribucion] = useState();
+  const [frecuencias, setFrecuencias] = useState();
 
   const generarDistribucion = () => {
     if (
@@ -57,7 +59,7 @@ export const Normal = () => {
 
   return (
     <div>
-      <Row gutter={16} justify={"center"} style={{marginTop: '15pt'}}>
+      <Row gutter={16} justify={"center"} style={{ marginTop: "15pt" }}>
         <DistribucionForm title="Normal">
           <Form.Item label="Tamaño Muestra" name="Tamaño Muestra">
             <Input
@@ -102,11 +104,20 @@ export const Normal = () => {
             </Form.Item>
           </div>
         </DistribucionForm>
-        {distribucion && <TablaResultados data={distribucion} />}
+        {distribucion && frecuencias && (
+          <AccordionTables
+            distribucion={distribucion}
+            frecuencias={frecuencias}
+          />
+        )}
       </Row>
       {distribucion && (
         <Row>
-          <Histograma distribucion={distribucion} />
+          <Histograma
+            distribucion={distribucion}
+            frecuencias={frecuencias}
+            setFrecuencias={setFrecuencias}
+          />
         </Row>
       )}
     </div>

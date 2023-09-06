@@ -80,29 +80,23 @@ const CustomTooltip = ({payload, label, active}) => {
 }
 
 export const Histograma = (props) => {
-  const [data, setData] = useState(props.distribucion);
   const [intervalos, setIntervalos] = useState(10);
-  const [dataHistograma, setDataHistograma] = useState();
 
   useEffect(() => {
-    setDataHistograma(
-      inicializarHistograma(data, intervalos)
+    props.setFrecuencias(
+      inicializarHistograma(props.distribucion, intervalos)
     );
-  }, [data]);
-
-  useEffect(() => {
-    setData(props.distribucion);
   }, [props.distribucion]);
 
   useEffect(() => {
-    setDataHistograma(
-      inicializarHistograma(data, intervalos)
+    props.setFrecuencias(
+      inicializarHistograma(props.distribucion, intervalos)
     );
   }, [intervalos]);
 
   return (
     <>
-      {dataHistograma && (
+      {props.frecuencias && (
         <div
           style={{
             display: "flex",
@@ -110,7 +104,7 @@ export const Histograma = (props) => {
             marginTop: "40px",
           }}
         >
-          <BarChart width={1320} height={500} data={dataHistograma}>
+          <BarChart width={1320} height={500} data={props.frecuencias}>
             <XAxis dataKey="marca de clase" />
             <YAxis />
             <Tooltip  content={<CustomTooltip/>}  />
