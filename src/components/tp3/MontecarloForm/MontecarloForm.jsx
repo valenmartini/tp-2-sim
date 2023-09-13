@@ -35,11 +35,11 @@ export const MontecarloForm = () => {
 
         </div>
         {step === 0 ? (
-            <StepGeneral />
+            <StepGeneral setStep={setStep} />
           ) : step === 1 ? (
-            <StepPrimerBola />
+            <StepPrimerBola setStep={setStep} />
           ) : (
-            <StepSegundaBola />
+            <StepSegundaBola setStep={setStep} />
           )}
       </MontecarloContainer>
     </div>
