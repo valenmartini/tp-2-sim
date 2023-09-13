@@ -27,8 +27,7 @@ const items = [
   },
   {
     label: 'Trabajo Practico 3',
-    key: 'tp3',
-    disabled: true
+    key: 'tp3'
   }
 ];
 
@@ -37,6 +36,7 @@ const URI_SELECTOR = {
   ["tp2-uniforme"]: "/tp-2/uniforme",
   ["tp2-normal"]: "/tp-2/normal",
   ["tp2-exponencial"]: "/tp-2/exponencial",
+  ["tp3"]: "/tp-3/montecarlo"
 };
 
 export const MenuBar = () => {
