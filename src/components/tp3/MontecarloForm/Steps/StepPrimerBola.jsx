@@ -1,30 +1,65 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Row } from "antd";
 import Title from "antd/es/typography/Title";
-import React from "react";
+import React, { useEffect } from "react";
 
 export const StepPrimerBola = (props) => {
   const [form] = Form.useForm();
+  
+  useEffect(() => {
+    form.setFieldsValue(props.valores.probabilidadesPrimerBola)
+  },[])
+
+  const handleChange = (e) => {
+    console.log(e.target.value, e.target.name);
+
+    props.setValores((prev) => {
+      prev.probabilidadesPrimerBola[e.target.name] = Number(e.target.value);
+      form.setFieldValue(e.target.name, e.target.value)
+      return prev;
+    });
+  };
+
   return (
     <div>
       <div>
         <Title level={4}>Probabilidades Primera Bola</Title>
         <Form form={form} layout="inline">
           <Row gutter={[16, 24]}>
-            <Form.Item label="Prob. 6 pinos">
-              <Input />
+            <Form.Item name="probSeis" label="Prob. 6 pinos">
+              <Input
+                value={props.valores.probabilidadesPrimerBola.probSeis}
+                name="probSeis"
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item label="Prob. 7 pinos">
-              <Input />
+            <Form.Item name="probSiete" label="Prob. 7 pinos">
+              <Input
+                value={props.valores.probabilidadesPrimerBola.probSiete}
+                name="probSiete"
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item label="Prob. 8 pinos">
-              <Input />
+            <Form.Item name="probOcho" label="Prob. 8 pinos">
+              <Input
+                value={props.valores.probabilidadesPrimerBola.probOcho}
+                name="probOcho"
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item label="Prob. 9 pinos">
-              <Input />
+            <Form.Item name="probNueve" label="Prob. 9 pinos">
+              <Input
+                value={props.valores.probabilidadesPrimerBola.probNueve}
+                name="probNueve"
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item label="Prob. 10 pinos">
-              <Input />
+            <Form.Item name="probDiez" label="Prob. 10 pinos">
+              <Input
+                value={props.valores.probabilidadesPrimerBola.probDiez}
+                name="probDiez"
+                onChange={handleChange}
+              />
             </Form.Item>
           </Row>
         </Form>

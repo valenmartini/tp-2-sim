@@ -4,9 +4,56 @@ import { Steps } from "antd";
 import { StepGeneral } from "./Steps/StepGeneral";
 import { StepPrimerBola } from "./Steps/StepPrimerBola";
 import { StepSegundaBola } from "./Steps/StepSegundaBola";
+import { generarProcesoSimuacion } from "../Procesos/procesoSimulacion";
+
+const initialValues = {
+  rondas: 10,
+  filas: 100,
+  puntosPrimerTiro: 20,
+  puntosSegundoTiro: 15,
+  tirosAcumular: 10,
+  puntajeSuperar: 200,
+  probabilidadesPrimerBola: {
+    probSeis: 20,
+    probSiete: 20,
+    probOcho: 20,
+    probNueve: 20,
+    probDiez: 20,
+  },
+  probabilidadesSegundaBola: {
+    seisPrimerTiro: {
+      probCero: 20,
+      probUno: 20,
+      probDos: 20,
+      probTres: 20,
+      probCuatro: 20,
+    },
+    sietePrimerTiro: {
+      probCero: 25,
+      probUno: 25,
+      probDos: 25,
+      probTres: 25,
+    },
+    ochoPrimerTiro: {
+      probCero: 30,
+      probUno: 30,
+      probDos: 40,
+    },
+    nuevePrimerTiro: {
+      probCero: 50,
+      probUno: 50,
+    },
+  },
+};
 
 export const MontecarloForm = () => {
+  const [valores, setValores] = useState(initialValues);
   const [step, setStep] = useState(0);
+
+  const generarSimulacion = ()=> {
+    console.log(valores);
+    generarProcesoSimuacion();
+  }
 
   return (
     <div>
@@ -32,15 +79,14 @@ export const MontecarloForm = () => {
               },
             ]}
           />
-
         </div>
         {step === 0 ? (
-            <StepGeneral setStep={setStep} />
-          ) : step === 1 ? (
-            <StepPrimerBola setStep={setStep} />
-          ) : (
-            <StepSegundaBola setStep={setStep} />
-          )}
+          <StepGeneral setStep={setStep} valores={valores} setValores={setValores} />
+        ) : step === 1 ? (
+          <StepPrimerBola setStep={setStep} valores={valores} setValores={setValores}/>
+        ) : (
+          <StepSegundaBola setStep={setStep} valores={valores} setValores={setValores} generarSimulacion={generarSimulacion} />
+        )}
       </MontecarloContainer>
     </div>
   );
