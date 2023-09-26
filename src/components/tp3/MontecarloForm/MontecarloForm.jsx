@@ -6,6 +6,7 @@ import { StepPrimerBola } from "./Steps/StepPrimerBola";
 import { StepSegundaBola } from "./Steps/StepSegundaBola";
 import { generarProcesoSimuacion } from "../Procesos/procesoSimulacion";
 import { MontecarloTable } from "./MontecarloTable";
+import { MontecarloChart } from "./MontecarloChart";
 
 const initialValues = {
   rondas: 10,
@@ -14,6 +15,9 @@ const initialValues = {
   puntosSegundoTiro: 15,
   tirosAcumular: 10,
   puntajeSuperar: 200,
+  todasFilas: true,
+  visualizarDesde: 0,
+  visualizarHasta: 100,
   probabilidadesPrimerBola: {
     probSeis: 20,
     probSiete: 20,
@@ -58,6 +62,33 @@ export const MontecarloForm = () => {
     setSimulacion(generarProcesoSimuacion(valores));
 
     setSimulacionProcesada(true);
+  };
+
+  const generarDatosGrafico = () => {
+    let datos = simulacion.map((sim) => {
+      return {
+        ['Muestra']: sim.numeroFila,
+        ["Promedio Acumulado"]: Number(sim.promedioAcumulado).toFixed(4),
+      };
+    });
+
+    if (simulacion.length >= 2000) {
+      const dataCortada = [];
+      datos.forEach((sim, index) => {
+        if(simulacion.length >= 20000) {
+          if (index % 100 === 0) {
+            dataCortada.push(sim);
+          }
+        } else {
+        if (index % 10 === 0) {
+          dataCortada.push(sim);
+        }}
+      });
+      return dataCortada;
+    }
+    return datos;
+
+    //return simulacion.length > 5000 ? [...datos.slice(0, 1000),...datos.slice(datos.length - 1001, datos.length - 1)] : datos
   };
 
   return (
@@ -132,7 +163,10 @@ export const MontecarloForm = () => {
               margin: "20pt",
             }}
           >
-            <MontecarloTable data={simulacion} />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <MontecarloChart data={generarDatosGrafico()} />
+            </div>
+            <MontecarloTable desde={valores.visualizarDesde} hasta={valores.visualizarHasta} todas={valores.todasFilas} data={simulacion} />
           </div>
         </>
       )}
