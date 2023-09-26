@@ -1,7 +1,7 @@
 import Title from 'antd/es/typography/Title'
 import React from 'react'
 
-export const MontecarloContainer = ({children}) => {
+export const MontecarloContainer = (props) => {
   return (
     <div
     style={{
@@ -14,7 +14,7 @@ export const MontecarloContainer = ({children}) => {
     }}
   >
     <Title level={3} style={{display: 'flex', justifyContent: 'center'}}>Simulación de Montecarlo</Title><br/>
-    {children}
+    {props.children}
   </div>
   )
 }

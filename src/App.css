@@ -61,6 +61,16 @@ label {
   border-radius: 15px;
 }
 
+.box {
+  overflow: hidden;
+  transition: height 1s ease-in-out, opacity 1s ease-in-out;
+  height: 600px;
+}
+
+.fade {
+  height: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
