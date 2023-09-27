@@ -65,17 +65,23 @@ export const MontecarloForm = () => {
   };
 
   const generarDatosGrafico = () => {
-    let datos = simulacion.map((sim) => {
+    const datosPromedio = [];
+    simulacion.forEach((sim, index) => {
+      if(index % valores.tirosAcumular === 0) {
+        datosPromedio.push(sim)
+      }
+    })
+    let datos = datosPromedio.map((sim) => {
       return {
         ['Muestra']: sim.numeroFila,
         ["Promedio Acumulado"]: Number(sim.promedioAcumulado).toFixed(4),
       };
     });
 
-    if (simulacion.length >= 2000) {
+    if (datos.length >= 2000) {
       const dataCortada = [];
       datos.forEach((sim, index) => {
-        if(simulacion.length >= 20000) {
+        if(datos.length >= 20000) {
           if (index % 100 === 0) {
             dataCortada.push(sim);
           }
@@ -145,9 +151,10 @@ export const MontecarloForm = () => {
             style={{
               margin: "20pt",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "center"
             }}
           >
+            <span style={{fontWeight:'bold', paddingTop: '3pt', marginRight: '5pt'}}>La probabilidad es de {(simulacion[simulacion.length -1].promedioAcumulado *100).toFixed(4)}%</span>
             <Button
               type="primary"
               onClick={() => {
@@ -163,7 +170,7 @@ export const MontecarloForm = () => {
               margin: "20pt",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: '10pt' }}>
               <MontecarloChart data={generarDatosGrafico()} />
             </div>
             <MontecarloTable desde={valores.visualizarDesde} hasta={valores.visualizarHasta} todas={valores.todasFilas} data={simulacion} />

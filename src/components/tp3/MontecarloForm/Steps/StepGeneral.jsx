@@ -25,13 +25,6 @@ export const StepGeneral = (props) => {
       <div>
         <Title level={4}>Simulacion</Title>
         <Form form={form} layout="inline">
-          <Form.Item name="rondas" label="Cantidad de Rondas">
-            <Input
-              value={props.valores.rondas}
-              name="rondas"
-              onChange={handleChange}
-            />
-          </Form.Item>
           <Form.Item name="filas" label="Cantidad de filas">
             <Input
               value={props.valores.filas}
@@ -57,7 +50,7 @@ export const StepGeneral = (props) => {
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item name="visualizarHasta" label="Visualizar Hasta">
+          <Form.Item name="visualizarHasta" label="Cantidad de filas a visualizar">
             <Input
               value={props.valores.visualizarHasta}
               name="visualizarHasta"

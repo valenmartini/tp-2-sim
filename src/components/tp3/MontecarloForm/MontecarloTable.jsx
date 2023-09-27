@@ -3,7 +3,7 @@ import React from "react";
 
 const columns = [
   { title: "Numero Fila", dataIndex: "numeroFila", key: "numeroFila" },
-  { title: "Numero Ronda", dataIndex: "nroRonda", key: "nroRonda" },
+  { title: "Numero Partida", dataIndex: "nroRonda", key: "nroRonda" },
   { title: "N Random", dataIndex: "rndTiro", key: "rndTiro" },
   {
     title: "Pinos en primer Tiro",
@@ -22,7 +22,7 @@ const columns = [
     key: "acumRondas",
   },
   {
-    title: "Rondas Ganadas",
+    title: "Partidas Ganadas",
     dataIndex: "acumRondasGanadas",
     key: "acumRondasGanadas",
   },
@@ -47,7 +47,7 @@ export const MontecarloTable = (props) => {
     });
     if (!props.todas) {
       console.log(data.slice(props.desde - 1, props.hasta),data);
-      return data.slice(props.desde - 1, props.hasta);
+      return [...data.slice(props.desde - 1, props.desde + props.hasta), data[data.length -1]];
     } else {
       return data;
     }
