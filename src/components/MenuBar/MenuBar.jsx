@@ -28,6 +28,10 @@ const items = [
   {
     label: 'Trabajo Practico 3',
     key: 'tp3'
+  },
+  {
+    label: 'Trabajo Practico 4',
+    key: 'tp4'
   }
 ];
 
@@ -36,7 +40,8 @@ const URI_SELECTOR = {
   ["tp2-uniforme"]: "/tp-2/uniforme",
   ["tp2-normal"]: "/tp-2/normal",
   ["tp2-exponencial"]: "/tp-2/exponencial",
-  ["tp3"]: "/tp-3/montecarlo"
+  ["tp3"]: "/tp-3/montecarlo",
+  ['tp4']: "/tp-4/colas"
 };
 
 export const MenuBar = () => {

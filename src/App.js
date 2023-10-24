@@ -7,6 +7,7 @@ import { Exponencial } from "./routes/Exponencial";
 import { Normal } from "./routes/Normal";
 import { Uniforme } from "./routes/Uniforme";
 import { Montecarlo } from "./routes/Montecarlo";
+import { Colas } from "./routes/Colas";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/tp-2/normal" element={<Normal />} />
           <Route path="/tp-2/uniforme" element={<Uniforme />} />
           <Route path="/tp-3/montecarlo" element={<Montecarlo />} />
+          <Route path="/tp-4/colas" element={<Colas/>} />
         </Routes>
       </BrowserRouter>
     </>

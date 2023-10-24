@@ -1,0 +1,3 @@
+class FinLimpieza extends Evento{
+    
+}
