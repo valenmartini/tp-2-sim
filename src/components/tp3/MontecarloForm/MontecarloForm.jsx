@@ -14,39 +14,39 @@ const initialValues = {
   puntosPrimerTiro: 20,
   puntosSegundoTiro: 15,
   tirosAcumular: 10,
-  puntajeSuperar: 200,
+  puntajeSuperar: 120,
   todasFilas: true,
-  visualizarDesde: 0,
+  visualizarDesde: 1,
   visualizarHasta: 100,
   probabilidadesPrimerBola: {
-    probSeis: 20,
-    probSiete: 20,
-    probOcho: 20,
-    probNueve: 20,
-    probDiez: 20,
+    probSeis: 17,
+    probSiete: 10,
+    probOcho: 15,
+    probNueve: 18,
+    probDiez: 40,
   },
   probabilidadesSegundaBola: {
     seisPrimerTiro: {
-      probCero: 20,
+      probCero: 10,
       probUno: 20,
-      probDos: 20,
-      probTres: 20,
-      probCuatro: 20,
+      probDos: 30,
+      probTres: 30,
+      probCuatro: 10,
     },
     sietePrimerTiro: {
-      probCero: 25,
-      probUno: 25,
-      probDos: 25,
-      probTres: 25,
+      probCero: 2,
+      probUno: 10,
+      probDos: 45,
+      probTres: 43,
     },
     ochoPrimerTiro: {
-      probCero: 30,
-      probUno: 30,
-      probDos: 40,
+      probCero: 4,
+      probUno: 20,
+      probDos: 76,
     },
     nuevePrimerTiro: {
-      probCero: 50,
-      probUno: 50,
+      probCero: 6,
+      probUno: 94,
     },
   },
 };
@@ -66,8 +66,8 @@ export const MontecarloForm = () => {
 
   const generarDatosGrafico = () => {
     const datosPromedio = [];
-    simulacion.forEach((sim, index) => {
-      if(index % valores.tirosAcumular === 0) {
+    simulacion.forEach((sim) => {
+      if(sim.numeroFila === 1 || sim.numeroFila % valores.tirosAcumular === 0) {
         datosPromedio.push(sim)
       }
     })

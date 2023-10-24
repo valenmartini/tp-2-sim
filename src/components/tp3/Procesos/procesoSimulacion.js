@@ -17,32 +17,39 @@ console.log(arrayProbabilidadesConjuntas);
     let promedioAcumulado = arrayResultados[arrayResultados.length - 1]
       ? arrayResultados[arrayResultados.length - 1].promedioAcumulado
       : 0;
+    acumRondas += fila.puntos;
     //verifico acumulacion
-    if (i != 0 && i % tirosAcumular === 0) {
-      nroRonda += 1;
+    if (i != 0 && fila.numeroFila % tirosAcumular === 0) {
+      
       if (acumRondas >= puntajeSuperar) {
         acumRondasGanadas += 1;
 
         promedioAcumulado =
           (arrayResultados[arrayResultados.length - 1].acumRondasGanadas + 1) /
-          (i / tirosAcumular);
+          (fila.numeroFila / tirosAcumular);
       } else {
         promedioAcumulado =
           arrayResultados[arrayResultados.length - 1].acumRondasGanadas /
-          (i / tirosAcumular);
+          (fila.numeroFila / tirosAcumular);
       }
-      acumRondas = fila.puntos;
+      arrayResultados.push({
+        acumRondas,
+        acumRondasGanadas,
+        promedioAcumulado,
+        nroRonda,
+        ...fila,
+      });
+      acumRondas = 0;
+      nroRonda += 1;
     } else {
-      acumRondas += fila.puntos;
+      arrayResultados.push({
+        acumRondas,
+        acumRondasGanadas,
+        promedioAcumulado,
+        nroRonda,
+        ...fila,
+      });
     }
-    //agrego fila a array de resultados
-    arrayResultados.push({
-      acumRondas,
-      acumRondasGanadas,
-      promedioAcumulado,
-      nroRonda,
-      ...fila,
-    });
   }
   console.log(arrayResultados);
   return arrayResultados;

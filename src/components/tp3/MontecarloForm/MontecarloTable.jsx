@@ -47,7 +47,7 @@ export const MontecarloTable = (props) => {
     });
     if (!props.todas) {
       console.log(data.slice(props.desde - 1, props.hasta),data);
-      return [...data.slice(props.desde - 1, props.desde + props.hasta), data[data.length -1]];
+      return [...data.slice(props.desde - 1, props.desde - 1 + props.hasta), data[data.length -1]];
     } else {
       return data;
     }
