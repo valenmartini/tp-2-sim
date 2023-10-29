@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { ColasContainer } from "./ColasContainer";
-import { Steps } from "antd";
+import { Button, Steps } from "antd";
 import { StepInicial } from "./Steps/StepInicial";
 import { StepDatos } from "./Steps/StepDatos";
 import { generarSimulacion } from "../Procesos/generacionSimulacion";
+import { SimulacionTable } from "./ColaTables/SimulacionTable";
+import { TableGrupos } from "./ColaTables/TableGrupos";
+import Title from "antd/es/typography/Title";
 
 const initialValues = {
   datosGenerales: {
@@ -13,7 +16,7 @@ const initialValues = {
     todasFilas: true,
     visualizarDesde: 0,
     visualizarHasta: 100,
-    tiempo: 100
+    tiempo: 100,
   },
   datosTiempo: {
     llegadas: {
@@ -47,49 +50,94 @@ const initialValues = {
 export const ColasForm = () => {
   const [step, setStep] = useState(0);
   const [valores, setValores] = useState(initialValues);
-  const [simulacion, setSimulacion] = useState([]);
+  const [simulacion, setSimulacion] = useState();
 
   const handleGenerarSimulacion = () => {
     console.log(valores);
-    generarSimulacion(valores)
+    setSimulacion(generarSimulacion(valores));
   };
 
+  console.log(
+    simulacion?.listaGrupos.cola.map((val) => {
+      const valRounded = {};
+      Object.keys(val).forEach((key) => {
+        valRounded[key] =
+          typeof val[key] === "number"
+            ? parseFloat(val[key].toFixed(5))
+            : val[key];
+      });
+      return valRounded;
+    })
+  );
   return (
-    <ColasContainer>
-      <div style={{ margin: "0 30pt 20pt 30pt" }}>
-        <Steps
-          type="navigation"
-          size="small"
-          current={step}
-          onChange={(value) => setStep(value)}
-          items={[
-            {
-              title: "General",
-              status: step === 0 ? "process" : "finish",
-            },
-            {
-              title: "Datos de tiempo",
-              status: step < 1 ? "wait" : step === 1 ? "process" : "finish",
-            },
-          ]}
-        />
-      </div>
-      {step === 0 && (
-        <StepInicial
-          setStep={setStep}
-          valores={valores}
-          setValores={setValores}
-        />
-      )}
+    <>
+    <div style={{display: simulacion? "none": ""}}>
+      <ColasContainer>
+        <div style={{ margin: "0 30pt 20pt 30pt" }}>
+          <Steps
+            type="navigation"
+            size="small"
+            current={step}
+            onChange={(value) => setStep(value)}
+            items={[
+              {
+                title: "General",
+                status: step === 0 ? "process" : "finish",
+              },
+              {
+                title: "Datos de tiempo",
+                status: step < 1 ? "wait" : step === 1 ? "process" : "finish",
+              },
+            ]}
+          />
+        </div>
+        {step === 0 && (
+          <StepInicial
+            setStep={setStep}
+            valores={valores}
+            setValores={setValores}
+          />
+        )}
 
-      {step === 1 && (
-        <StepDatos
-          setStep={setStep}
-          valores={valores}
-          setValores={setValores}
-          generarSimulacion={handleGenerarSimulacion}
-        />
+        {step === 1 && (
+          <StepDatos
+            setStep={setStep}
+            valores={valores}
+            setValores={setValores}
+            generarSimulacion={handleGenerarSimulacion}
+          />
+        )}
+      </ColasContainer>
+      </div>
+      {simulacion && (
+        
+        <div>
+          <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+            <Button type="primary" onClick={()=> {setSimulacion()}}>Volver a generar una simulacion</Button>
+          </div>
+          <Title level={3} style={{display: 'flex', justifyContent: 'center'}}>Tabla de Simulaciones</Title>
+          <div
+            style={{ width: "100%", overflowX: "auto", whiteSpace: "nowrap" }}
+          >
+            <SimulacionTable simulacion={simulacion.simulaciones} />
+          </div>
+          <Title level={3} style={{display: 'flex', justifyContent: 'center'}}>Tabla de Grupos</Title>
+          <div>
+            <TableGrupos
+              grupos={simulacion?.listaGrupos.cola.map((val) => {
+                const valRounded = {};
+                Object.keys(val).forEach((key) => {
+                  valRounded[key] =
+                    typeof val[key] === "number"
+                      ? parseFloat(val[key].toFixed(5))
+                      : val[key];
+                });
+                return valRounded;
+              })}
+            />
+          </div>
+        </div>
       )}
-    </ColasContainer>
+    </>
   );
 };

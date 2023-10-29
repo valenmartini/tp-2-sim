@@ -9,4 +9,9 @@ export class Grupo {
         this.tiempoALlegada = 0;
         this.tiempoLlegada = 0;
     }
+
+    generarOcupacion(){
+        this.ocupando = true;
+        this.porLlegar = false;
+    }
 }

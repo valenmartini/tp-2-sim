@@ -1,10 +1,10 @@
-export const generarDistribucionUniforme = (muestra, valorA, valorB) => {
+export const generarDistribucionUniforme = (valorA, valorB,rnd = null,muestra = 1) => {
   const distribucion = [];
   for (let i = 0; i < muestra; ++i) {
     distribucion.push(
       Number(
         Number(valorA) +
-          Number(Math.random()) * (Number(valorB) - Number(valorA))
+          Number(rnd || Math.random()) * (Number(valorB) - Number(valorA))
       )
     );
   }

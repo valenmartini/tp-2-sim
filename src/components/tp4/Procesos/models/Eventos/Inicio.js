@@ -6,11 +6,6 @@ import { Evento } from "./Evento";
 export class Inicio extends Evento {
     constructor() {
         super();
-    }
-
-    getLlegadas(){
-        this.grupoHandBall = new GrupoHandBall();
-        this.grupoFutbol = new GrupoFutbol();
-        this.grupoBasketBall = new GrupoBasketBall();
+        this.type="Inicio"
     }
 }

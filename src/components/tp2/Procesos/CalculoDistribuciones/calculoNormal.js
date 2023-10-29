@@ -1,4 +1,4 @@
-export const generarDistribucionNormal = (muestra, media, desviacion) => {
+export const generarDistribucionNormal = (media, desviacion, muestra = 1) => {
   const distribucion = [];
   for (let i = 0; i < (muestra / 2).toFixed(0); i++) {
     const rnd1 = Math.random();

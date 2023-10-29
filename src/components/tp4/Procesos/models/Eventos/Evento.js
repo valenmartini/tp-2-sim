@@ -1,3 +1,6 @@
 export class Evento {
+    constructor(){
+        
+    }
 
 }
