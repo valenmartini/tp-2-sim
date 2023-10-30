@@ -15,7 +15,7 @@ export class GrupoFutbol extends Grupo {
   }
 
   generarOcupacion(reloj, valoresTiempo) {
-    super.generarOcupacion();
+    super.generarOcupacion(reloj);
     this.rndOcupacion = Math.random();
     this.tiempoOcupacion = parseFloat(
       generarDistribucionUniforme(
@@ -25,5 +25,9 @@ export class GrupoFutbol extends Grupo {
       )[0].toFixed(5)
     );
     this.tiempoFinOcupacion = this.tiempoOcupacion + reloj;
+  }
+
+  entrarACola(reloj){
+    super.entrarACola(reloj);
   }
 }

@@ -2,8 +2,9 @@ import FinLimpieza from "./Eventos/FinLimpieza";
 import { Inicio } from "./Eventos/Inicio";
 import Llegada from "./Eventos/Llegada";
 
-const EVENT_MAPPER = {
-  Inicio: Inicio,
+const parseNumber = (number) => {
+  if (isNaN(number)) return number;
+  return Number(number.toFixed(5));
 };
 
 export class Simulacion {
@@ -15,49 +16,65 @@ export class Simulacion {
     llegadaFutbol,
     llegadaHandBall,
     disciplina = null,
-    ocupacion = null
+    ocupacion = null,
+    tiempoLibreCancha = 0,
+    promedioEsperaFutbol = 0,
+    promedioEsperaHandBall = 0,
+    promedioEsperaBasketBall = 0
   ) {
     this.evento = evento;
     this.disciplina = disciplina;
     this.eventType = this.evento.type;
-    this.reloj = reloj;
+    this.reloj = parseNumber(reloj);
     this.fila = fila;
-    this.llegadaFutbol = llegadaFutbol;
-    this.llegadaBasketBall = llegadaBasketBall;
-    this.llegadaHandBall = llegadaHandBall;
-    this.rndLlegadaFutbol = parseFloat(llegadaFutbol.rndLlegada.toFixed(5));
-    this.rndLlegadaHandBall = parseFloat(llegadaHandBall.rndLlegada.toFixed(5));
-    this.rndLlegadaBasketBall = parseFloat(
-      llegadaBasketBall.rndLlegada.toFixed(5)
+    this.llegadaFutbol = parseNumber(llegadaFutbol);
+    this.llegadaBasketBall = parseNumber(llegadaBasketBall);
+    this.llegadaHandBall = parseNumber(llegadaHandBall);
+    this.rndLlegadaFutbol = parseNumber(llegadaFutbol.rndLlegada);
+    this.rndLlegadaHandBall = parseNumber(llegadaHandBall.rndLlegada);
+    this.rndLlegadaBasketBall = parseNumber(llegadaBasketBall.rndLlegada);
+    this.tiempoALlegarFutbol = parseNumber(llegadaFutbol.tiempoALlegada);
+    this.tiempoALlegarHandBall = parseNumber(llegadaHandBall.tiempoALlegada);
+    this.tiempoALlegarBasketBall = parseNumber(
+      llegadaBasketBall.tiempoALlegada
     );
-    this.tiempoALlegarFutbol = llegadaFutbol.tiempoALlegada;
-    this.tiempoALlegarHandBall = llegadaHandBall.tiempoALlegada;
-    this.tiempoALlegarBasketBall = llegadaBasketBall.tiempoALlegada;
-    this.tiempoLlegadaFutbol = llegadaFutbol.tiempoLlegada;
-    this.tiempoLlegadaHandBall = llegadaHandBall.tiempoLlegada;
-    this.tiempoLlegadaBasketBall = llegadaBasketBall.tiempoLlegada;
+    this.tiempoLlegadaFutbol = parseNumber(llegadaFutbol.tiempoLlegada);
+    this.tiempoLlegadaHandBall = parseNumber(llegadaHandBall.tiempoLlegada);
+    this.tiempoLlegadaBasketBall = parseNumber(llegadaBasketBall.tiempoLlegada);
+    this.tiempoLibreCancha = parseNumber(tiempoLibreCancha);
     if (ocupacion) {
       this.ocupacion = ocupacion;
       switch (ocupacion.type) {
         case "basketball":
-          this.rndOcupacionBasketBall = parseFloat(ocupacion.rndOcupacion.toFixed(5));
-          this.tiempoOcupacionBasketBall = ocupacion.tiempoOcupacion;
-          this.tiempoFinOcupacionBasketBall = ocupacion.tiempoFinOcupacion;
+          this.rndOcupacionBasketBall = parseNumber(ocupacion.rndOcupacion);
+          this.tiempoOcupacionBasketBall = parseNumber(
+            ocupacion.tiempoOcupacion
+          );
+          this.tiempoFinOcupacionBasketBall = parseNumber(
+            ocupacion.tiempoFinOcupacion
+          );
           break;
         case "handball":
-          this.rndOcupacionHandBall = parseFloat(ocupacion.rndOcupacion.toFixed(5));
-          this.tiempoOcupacionHandBall = ocupacion.tiempoOcupacion;
-          this.tiempoFinOcupacionHandBall = ocupacion.tiempoFinOcupacion;
+          this.rndOcupacionHandBall = parseNumber(ocupacion.rndOcupacion);
+          this.tiempoOcupacionHandBall = parseNumber(ocupacion.tiempoOcupacion);
+          this.tiempoFinOcupacionHandBall = parseNumber(
+            ocupacion.tiempoFinOcupacion
+          );
           break;
         case "futbol":
-          this.rndOcupacionFutbol = parseFloat(ocupacion.rndOcupacion.toFixed(5));
-          this.tiempoOcupacionFutbol = ocupacion.tiempoOcupacion;
-          this.tiempoFinOcupacionFutbol = ocupacion.tiempoFinOcupacion;
+          this.rndOcupacionFutbol = parseNumber(ocupacion.rndOcupacion);
+          this.tiempoOcupacionFutbol = parseNumber(ocupacion.tiempoOcupacion);
+          this.tiempoFinOcupacionFutbol = parseNumber(
+            ocupacion.tiempoFinOcupacion
+          );
           break;
       }
     }
-
+    this.promedioEsperaBasketBall = parseNumber(promedioEsperaBasketBall);
+    this.promedioEsperaFutbol = parseNumber(promedioEsperaFutbol);
+    this.promedioEsperaHandBall = parseNumber(promedioEsperaHandBall);
     this.tiempoFinLimpieza = null;
+    this.tiempoOcupacion = this.ocupacion ? parseNumber(this.ocupacion.tiempoFinOcupacion) : null;
   }
 
   getNextEvento(tiempoLimpieza) {
@@ -77,11 +94,11 @@ export class Simulacion {
         proximaLlegada.tiempoLlegada
     ) {
       this.tiempoFinLimpieza =
-        this.ocupacion.tiempoFinOcupacion +
-        parseFloat((tiempoLimpieza / 60).toFixed(5));
+        parseNumber(this.ocupacion.tiempoFinOcupacion +
+        (tiempoLimpieza / 60));
       return new FinLimpieza(
-        this.ocupacion.tiempoFinOcupacion +
-          parseFloat((tiempoLimpieza / 60).toFixed(5))
+        parseNumber(this.ocupacion.tiempoFinOcupacion +
+          (tiempoLimpieza / 60))
       );
     }
     return new Llegada(proximaLlegada.tiempoLlegada, proximaLlegada.type);

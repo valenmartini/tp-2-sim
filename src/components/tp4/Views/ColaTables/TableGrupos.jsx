@@ -6,19 +6,13 @@ const columns = [
         title: "Disciplina",dataIndex: "type", key: "type"
     },
     {
-        title: "RND Llegada",dataIndex: "rndLlegada", key: "rndLlegada"
-    },
-    {
-        title: "Tiempo entre Llegada",dataIndex: "tiempoALlegada", key: "tiempoALlegada"
-    },
-    {
         title: "Tiempo de Llegada",dataIndex: "tiempoLlegada", key: "tiempoLlegada"
     },
     {
-        title: "RND Ocupacion",dataIndex: "rndOcupacion", key: "rndOcupacion"
+        title: "Tiempo de Espera",dataIndex: "tiempoEnEspera", key: "tiempoEnEspera"
     },
     {
-        title: "Tiempo en Ocupacion",dataIndex: "tiempoOcupacion", key: "tiempoOcupacion"
+        title: "Tiempo Inicio Ocupacion",dataIndex: "tiempoInicioOcupacion", key: "tiempoInicioOcupacion"
     },
     {
         title: "Tiempo Fin Ocupacion",dataIndex: "tiempoFinOcupacion", key: "tiempoFinOcupacion"
