@@ -18,14 +18,18 @@ export class Simulacion {
     disciplina = null,
     ocupacion = null,
     tiempoLibreCancha = 0,
+    tiempoLibreCanchaDiario = 0,
     promedioEsperaFutbol = 0,
     promedioEsperaHandBall = 0,
-    promedioEsperaBasketBall = 0
+    promedioEsperaBasketBall = 0,
+    contadorAbandono = 0,
+    cola = 0,
   ) {
     this.evento = evento;
     this.disciplina = disciplina;
     this.eventType = this.evento.type;
     this.reloj = parseNumber(reloj);
+    this.cola = cola;
     this.fila = fila;
     this.llegadaFutbol = parseNumber(llegadaFutbol);
     this.llegadaBasketBall = parseNumber(llegadaBasketBall);
@@ -42,6 +46,7 @@ export class Simulacion {
     this.tiempoLlegadaHandBall = parseNumber(llegadaHandBall.tiempoLlegada);
     this.tiempoLlegadaBasketBall = parseNumber(llegadaBasketBall.tiempoLlegada);
     this.tiempoLibreCancha = parseNumber(tiempoLibreCancha);
+    this.tiempoLibreCanchaDiario = parseNumber(tiempoLibreCanchaDiario);
     if (ocupacion) {
       this.ocupacion = ocupacion;
       switch (ocupacion.type) {
@@ -75,6 +80,7 @@ export class Simulacion {
     this.promedioEsperaHandBall = parseNumber(promedioEsperaHandBall);
     this.tiempoFinLimpieza = null;
     this.tiempoOcupacion = this.ocupacion ? parseNumber(this.ocupacion.tiempoFinOcupacion) : null;
+    this.contadorAbandono = contadorAbandono;
   }
 
   getNextEvento(tiempoLimpieza) {

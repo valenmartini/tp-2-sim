@@ -55,4 +55,12 @@ export default class Cola {
 
     return {acumBasket,acumFutbol, acumHandBall}
   }
+
+  estaLlena(triggerAbandono) {
+    return this.cola.length >= triggerAbandono;
+  }
+
+  getCantidadEnCola(){
+    return this.cola.length;
+  }
 }

@@ -3,6 +3,7 @@ export default class Cancha {
     this.ocupado = false;
     this.grupoOcupando = "";
     this.tiempoLibre = 0;
+    this.tiempoLibreDiario = 0;
     this.ultimoMomentoOcupado = 0;
   }
 
@@ -14,6 +15,8 @@ export default class Cancha {
       this.tiempoLibre
     );
     this.tiempoLibre += Number((reloj - this.ultimoMomentoOcupado).toFixed(5));
+    this.tiempoLibreDiario =
+      this.tiempoLibre / ((reloj - (reloj % 24)) / 24 + 1);
   }
 
   ocuparCancha(reloj, grupoOcupando) {

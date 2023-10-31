@@ -23,6 +23,11 @@ const columns = [
     key: "reloj",
   },
   {
+    title: "Cola",
+    dataIndex: "cola",
+    key: "cola",
+  },
+  {
     title: "Llegadas",
     children: [
       {
@@ -129,7 +134,7 @@ const columns = [
         title: "Tiempo Fin Limpieza",
         dataIndex: "tiempoFinLimpieza",
         key: "tiempoFinLimpieza",
-      }
+      },
     ],
   },
   {
@@ -139,6 +144,11 @@ const columns = [
         title: "Acumulado de tiempo Libre de Cancha",
         dataIndex: "tiempoLibreCancha",
         key: "tiempoLibreCancha",
+      },
+      {
+        title: "Tiempo Libre de Cancha Diario",
+        dataIndex: "tiempoLibreCanchaDiario",
+        key: "tiempoLibreCanchaDiario",
       },
       {
         title: "Promedio Espera Futbol",
@@ -155,18 +165,35 @@ const columns = [
         dataIndex: "promedioEsperaHandBall",
         key: "promedioEsperaHandBall",
       },
+      {
+        title: "Cantidad de grupos Abandono",
+        dataIndex: "contadorAbandono",
+        key: "contadorAbandono",
+      },
     ],
   },
 ];
 
-export const SimulacionTable = ({ simulacion }) => {
+export const SimulacionTable = ({ simulacion, todas, desde, hasta }) => {
+  const generarTabla = () => {
+    if (!todas) {
+      console.log(simulacion.slice(desde - 1, hasta), simulacion);
+      return [...simulacion.filter((sim) => sim.reloj >= desde)].slice(
+        0,
+        hasta
+      );
+    } else {
+      return simulacion;
+    }
+  };
+
   return (
     <div style={{ width: "maxContent" }}>
       <Table
         style={{ width: "200%", borderCollapse: "collapse", margin: "10pt" }}
         columns={columns}
         bordered
-        dataSource={simulacion}
+        dataSource={generarTabla()}
         size="small"
       />
     </div>

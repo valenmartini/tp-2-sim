@@ -23,7 +23,13 @@ const GROUP_MAPPER = {
 };
 
 export class GestorSimulacion {
-  constructor(filas, tiempoFinSimulacion, tiempoLimpieza, valoresTiempo) {
+  constructor(
+    filas,
+    tiempoFinSimulacion,
+    tiempoLimpieza,
+    valoresTiempo,
+    triggerAbandono
+  ) {
     this.simulaciones = [];
     this.reloj = 0;
     this.fila = 1;
@@ -32,6 +38,7 @@ export class GestorSimulacion {
     this.filas = filas;
     this.tiempoFinSimulacion = tiempoFinSimulacion;
     this.valoresTiempo = valoresTiempo;
+    this.triggerAbandono = triggerAbandono;
     this.llegadaHandBall = null;
     this.llegadaFutbol = null;
     this.llegadaBasketBall = null;
@@ -44,13 +51,13 @@ export class GestorSimulacion {
     this.cantFutbol = 0;
     this.cantHandBall = 0;
     this.cantBasketBall = 0;
+    this.contadorAbandono = 0;
   }
 
   iniciarSimulacion() {
     let proximoEvento = this.generarEventoInicio();
     this.reloj = proximoEvento.reloj;
     while (this.fila < this.filas && this.tiempoFinSimulacion > this.reloj) {
-      this.fila += 1;
       proximoEvento = this.generarNuevaSimulacion(proximoEvento);
       this.reloj = proximoEvento.reloj;
     }
@@ -58,46 +65,67 @@ export class GestorSimulacion {
   }
 
   generarNuevaSimulacion(evento) {
-    console.log(this.cantBasketBall, this.cantFutbol, this.cantHandBall);
-    console.log(
-      "fila:",
-      this.fila,
-      "evento:",
-      evento,
-      "cola:",
-      this.cola,
-      "simulaciones:",
-      this.simulaciones,
-      this.promedioEsperaBasketBall,
-      this.promedioEsperaFutbol,
-      this.promedioEsperaHandBall
-    );
-    if (this.tiempoFinSimulacion <= this.reloj || this.fila == this.filas) evento = new FinSimulacion();
-    this.calcularPromedios();
-    switch (evento.constructor.name) {
-      case "Llegada":
-        this.generarEventoLlegada();
-        break;
-      case "FinLimpieza":
-        this.generarEventoFinLimpieza();
-        break;
+    try {
+      this.validarAbandono(evento);
+      this.fila += 1;
+      console.log(this.cantBasketBall, this.cantFutbol, this.cantHandBall);
+      console.log(
+        "fila:",
+        this.fila,
+        "evento:",
+        evento,
+        "cola:",
+        this.cola,
+        "simulaciones:",
+        this.simulaciones,
+        this.promedioEsperaBasketBall,
+        this.promedioEsperaFutbol,
+        this.promedioEsperaHandBall
+      );
+      if (this.tiempoFinSimulacion <= this.reloj || this.fila == this.filas)
+        evento = new FinSimulacion();
+      this.calcularPromedios();
+      switch (evento.constructor.name) {
+        case "Llegada":
+          this.generarEventoLlegada();
+          break;
+        case "FinLimpieza":
+          this.generarEventoFinLimpieza();
+          break;
+      }
+      let simulacion = new Simulacion(
+        evento,
+        this.reloj,
+        this.fila,
+        this.llegadaBasketBall,
+        this.llegadaFutbol,
+        this.llegadaHandBall,
+        evento.disciplina || null,
+        this.ocupacion,
+        this.cancha.tiempoLibre,
+        this.cancha.tiempoLibreDiario,
+        this.promedioEsperaFutbol,
+        this.promedioEsperaHandBall,
+        this.promedioEsperaBasketBall,
+        this.contadorAbandono,
+        this.cola.getCantidadEnCola()
+      );
+      this.simulaciones.push(simulacion);
+      return simulacion.getNextEvento(this.tiempoLimpieza);
+    } catch {
+      console.log("falla");
+      let simulacion = new Simulacion(
+        evento,
+        this.reloj,
+        this.fila,
+        this.llegadaBasketBall,
+        this.llegadaFutbol,
+        this.llegadaHandBall,
+        evento.disciplina || null,
+        this.ocupacion
+      );
+      return simulacion.getNextEvento(this.tiempoLimpieza);
     }
-    let simulacion = new Simulacion(
-      evento,
-      this.reloj,
-      this.fila,
-      this.llegadaBasketBall,
-      this.llegadaFutbol,
-      this.llegadaHandBall,
-      evento.disciplina || null,
-      this.ocupacion,
-      this.cancha.tiempoLibre,
-      this.promedioEsperaFutbol,
-      this.promedioEsperaHandBall,
-      this.promedioEsperaBasketBall
-    );
-    this.simulaciones.push(simulacion);
-    return simulacion.getNextEvento(this.tiempoLimpieza);
   }
 
   generarEventoInicio() {
@@ -135,26 +163,7 @@ export class GestorSimulacion {
       return grupo.tiempoLlegada == this.reloj;
     });
 
-    switch (proximaLlegada.constructor.name) {
-      case "GrupoBasketBall":
-        this.llegadaBasketBall = new GrupoBasketBall(
-          this.reloj,
-          this.valoresTiempo.llegadas.basketBall
-        );
-        break;
-      case "GrupoFutbol":
-        this.llegadaFutbol = new GrupoFutbol(
-          this.reloj,
-          this.valoresTiempo.llegadas.futbol
-        );
-        break;
-      case "GrupoHandBall":
-        this.llegadaHandBall = new GrupoHandBall(
-          this.reloj,
-          this.valoresTiempo.llegadas.handBall
-        );
-        break;
-    }
+    this.generarNuevaLlegada(proximaLlegada);
     if (this.cancha.ocupado) {
       proximaLlegada.entrarACola(this.reloj);
       this[GROUP_MAPPER[proximaLlegada.type].CANT] += 1;
@@ -181,8 +190,33 @@ export class GestorSimulacion {
     this.cancha.ocuparCancha(this.reloj, nextToEnter);
   }
 
+  generarNuevaLlegada(proximaLlegada) {
+    switch (proximaLlegada.constructor.name) {
+      case "GrupoBasketBall":
+        this.llegadaBasketBall = new GrupoBasketBall(
+          this.reloj,
+          this.valoresTiempo.llegadas.basketBall
+        );
+        break;
+      case "GrupoFutbol":
+        this.llegadaFutbol = new GrupoFutbol(
+          this.reloj,
+          this.valoresTiempo.llegadas.futbol
+        );
+        break;
+      case "GrupoHandBall":
+        this.llegadaHandBall = new GrupoHandBall(
+          this.reloj,
+          this.valoresTiempo.llegadas.handBall
+        );
+        break;
+    }
+  }
+
   calcularPromedios() {
-    const {acumFutbol, acumBasket, acumHandBall} = this.cola.acumularTiempo(this.reloj);
+    const { acumFutbol, acumBasket, acumHandBall } = this.cola.acumularTiempo(
+      this.reloj
+    );
     this.calcularPromedio(acumFutbol, "futbol");
     this.calcularPromedio(acumBasket, "basketball");
     this.calcularPromedio(acumHandBall, "handball");
@@ -190,21 +224,34 @@ export class GestorSimulacion {
 
   calcularPromedio(acum, type) {
     const group = GROUP_MAPPER[type];
-    if(this[group.CANT] === 0) return;
-    if(acum === 0) return;
-    console.log(
-      acum,
-      this[group.PROM],
-      this[group.CANT],
-    );
+    if (this[group.CANT] === 0) return;
+    if (acum === 0) return;
+    console.log(acum, this[group.PROM], this[group.CANT]);
     this[group.PROM] = Number(
       Number(
         Number(this[group.PROM]) * Number(this[group.CANT] - 1) +
-          Number(
-            acum.toFixed(5)
-          )
+          Number(acum.toFixed(5))
       ) / this[group.CANT]
     );
     console.log(this[group.PROM]);
+  }
+
+  validarAbandono(proximoEvento) {
+    if (
+      proximoEvento.type != "Llegada" ||
+      !this.cola.estaLlena(this.triggerAbandono)
+    )
+      return;
+    this.contadorAbandono += 1;
+    const proximaLlegada = [
+      this.llegadaFutbol,
+      this.llegadaBasketBall,
+      this.llegadaHandBall,
+    ].find((grupo) => {
+      return grupo.tiempoLlegada == this.reloj;
+    });
+
+    this.generarNuevaLlegada(proximaLlegada);
+    throw new Error();
   }
 }
