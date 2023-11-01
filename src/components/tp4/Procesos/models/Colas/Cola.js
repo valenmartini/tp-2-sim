@@ -29,6 +29,24 @@ export default class Cola {
     }
   }
 
+  contarDisciplinas(){
+    let contBasket = 0, contFutbol = 0, contHandBall = 0;
+
+    this.cola.forEach((grupo)=>{
+      switch(grupo.type){
+        case 'basketball':
+          contBasket += 1;
+          break;
+        case 'futbol':
+          contFutbol += 1;
+          break;
+        case 'handball':
+          contHandBall += 1;
+      }
+    })
+    return {contBasket, contFutbol, contHandBall}
+  }
+
   acumularTiempo(reloj){
     let acumBasket = 0,acumFutbol = 0, acumHandBall = 0;
 

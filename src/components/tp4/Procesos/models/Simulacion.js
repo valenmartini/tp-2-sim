@@ -1,4 +1,5 @@
 import FinLimpieza from "./Eventos/FinLimpieza";
+import FinOcupacion from "./Eventos/FinOcupacion";
 import { Inicio } from "./Eventos/Inicio";
 import Llegada from "./Eventos/Llegada";
 
@@ -24,6 +25,7 @@ export class Simulacion {
     promedioEsperaBasketBall = 0,
     contadorAbandono = 0,
     cola = 0,
+    tiempoFinLimpieza = null
   ) {
     this.evento = evento;
     this.disciplina = disciplina;
@@ -78,12 +80,14 @@ export class Simulacion {
     this.promedioEsperaBasketBall = parseNumber(promedioEsperaBasketBall);
     this.promedioEsperaFutbol = parseNumber(promedioEsperaFutbol);
     this.promedioEsperaHandBall = parseNumber(promedioEsperaHandBall);
-    this.tiempoFinLimpieza = null;
-    this.tiempoOcupacion = this.ocupacion ? parseNumber(this.ocupacion.tiempoFinOcupacion) : null;
+    this.tiempoFinLimpieza = tiempoFinLimpieza;
+    this.tiempoOcupacion = this.ocupacion
+      ? parseNumber(this.ocupacion.tiempoFinOcupacion)
+      : null;
     this.contadorAbandono = contadorAbandono;
   }
 
-  getNextEvento(tiempoLimpieza) {
+  getNextEvento() {
     const arrayLlegadas = [
       this.llegadaFutbol,
       this.llegadaBasketBall,
@@ -95,18 +99,18 @@ export class Simulacion {
 
     if (
       this.ocupacion &&
-      this.ocupacion.tiempoFinOcupacion +
-        parseFloat((tiempoLimpieza / 60).toFixed(5)) <=
-        proximaLlegada.tiempoLlegada
+      this.ocupacion.tiempoFinOcupacion <= proximaLlegada.tiempoLlegada
     ) {
-      this.tiempoFinLimpieza =
-        parseNumber(this.ocupacion.tiempoFinOcupacion +
-        (tiempoLimpieza / 60));
-      return new FinLimpieza(
-        parseNumber(this.ocupacion.tiempoFinOcupacion +
-          (tiempoLimpieza / 60))
-      );
+      this.tiempoFinOcupacion = this.ocupacion.tiempoFinOcupacion;
+      return new FinOcupacion(parseNumber(this.ocupacion.tiempoFinOcupacion));
     }
+
+    if (
+      this.tiempoFinLimpieza &&
+      this.tiempoFinLimpieza <= proximaLlegada.tiempoLlegada
+    )
+      return new FinLimpieza(this.tiempoFinLimpieza);
+
     return new Llegada(proximaLlegada.tiempoLlegada, proximaLlegada.type);
   }
 }
