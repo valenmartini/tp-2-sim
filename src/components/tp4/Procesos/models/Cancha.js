@@ -8,6 +8,7 @@ export default class Cancha {
   }
 
   acumularTiempoLibre(reloj) {
+    if (this.ocupado) return;
     console.log(
       reloj,
       this.ultimoMomentoOcupado,
@@ -19,8 +20,7 @@ export default class Cancha {
       this.tiempoLibre / ((reloj - (reloj % 24)) / 24 + 1);
   }
 
-  ocuparCancha(reloj, grupoOcupando) {
-    if (!this.ocupado) this.acumularTiempoLibre(reloj);
+  ocuparCancha(grupoOcupando) {
     this.ocupado = true;
     this.grupoOcupando = grupoOcupando;
   }

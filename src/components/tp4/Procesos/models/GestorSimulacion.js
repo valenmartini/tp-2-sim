@@ -66,43 +66,69 @@ export class GestorSimulacion {
   }
 
   generarNuevaSimulacion(evento) {
-      this.fila += 1;
-      console.log(this.cantBasketBall, this.cantFutbol, this.cantHandBall);
-      console.log(
-        "fila:",
-        this.fila,
-        "evento:",
-        evento,
-        "cola:",
-        this.cola,
-        "simulaciones:",
-        this.simulaciones,
-        this.promedioEsperaBasketBall,
-        this.promedioEsperaFutbol,
-        this.promedioEsperaHandBall
-      );
-      if (this.tiempoFinSimulacion <= this.reloj || this.fila == this.filas)
-        evento = new FinSimulacion();
+    this.fila += 1;
+    console.log(this.cantBasketBall, this.cantFutbol, this.cantHandBall);
+    console.log(
+      "fila:",
+      this.fila,
+      "evento:",
+      evento,
+      "cola:",
+      this.cola,
+      "simulaciones:",
+      this.simulaciones,
+      this.promedioEsperaBasketBall,
+      this.promedioEsperaFutbol,
+      this.promedioEsperaHandBall
+    );
+    if (this.tiempoFinSimulacion <= this.reloj || this.fila == this.filas)
+      evento = new FinSimulacion();
+    this.calcularPromedios();
+    this.cancha.acumularTiempoLibre(this.reloj);
+    switch (evento.constructor.name) {
+      case "Llegada":
+        this.generarEventoLlegada();
+        break;
+      case "FinLimpieza":
+        this.generarEventoFinLimpieza();
+        break;
+      case "FinOcupacion":
+        this.generarEventoFinOcupacion();
+        break;
+    }
+    let simulacion = new Simulacion(
+      evento,
+      this.reloj,
+      this.fila,
+      this.llegadaBasketBall,
+      this.llegadaFutbol,
+      this.llegadaHandBall,
+      evento.disciplina || null,
+      this.ocupacion,
+      this.cancha.tiempoLibre,
+      this.cancha.tiempoLibreDiario,
+      this.promedioEsperaFutbol,
+      this.promedioEsperaHandBall,
+      this.promedioEsperaBasketBall,
+      this.contadorAbandono,
+      this.cola.getCantidadEnCola(),
+      this.tiempoFinLimpieza
+    );
+    this.simulaciones.push(simulacion);
+    let nextEvento = simulacion.getNextEvento();
+
+    if (nextEvento.reloj >= this.tiempoFinSimulacion) {
+      this.reloj = this.tiempoFinSimulacion;
       this.calcularPromedios();
-      switch (evento.constructor.name) {
-        case "Llegada":
-          this.generarEventoLlegada();
-          break;
-        case "FinLimpieza":
-          this.generarEventoFinLimpieza();
-          break;
-        case "FinOcupacion":
-          this.generarEventoFinOcupacion();
-          break;
-      }
-      let simulacion = new Simulacion(
-        evento,
-        this.reloj,
+      this.cancha.acumularTiempoLibre(this.reloj);
+      simulacion = new Simulacion(
+        new FinSimulacion(),
+        this.tiempoFinSimulacion,
         this.fila,
         this.llegadaBasketBall,
         this.llegadaFutbol,
         this.llegadaHandBall,
-        evento.disciplina || null,
+        null,
         this.ocupacion,
         this.cancha.tiempoLibre,
         this.cancha.tiempoLibreDiario,
@@ -112,10 +138,11 @@ export class GestorSimulacion {
         this.contadorAbandono,
         this.cola.getCantidadEnCola(),
         this.tiempoFinLimpieza
-
       );
       this.simulaciones.push(simulacion);
-      return simulacion.getNextEvento();
+      nextEvento = simulacion.getNextEvento();
+    }
+    return nextEvento;
   }
 
   generarEventoInicio() {
@@ -154,8 +181,8 @@ export class GestorSimulacion {
     });
 
     this.generarNuevaLlegada(proximaLlegada);
-    if(this.validarAbandono()) return;
-    
+    if (this.validarAbandono()) return;
+
     if (this.cancha.ocupado) {
       proximaLlegada.entrarACola(this.reloj);
       this[GROUP_MAPPER[proximaLlegada.type].CANT] += 1;
@@ -181,11 +208,11 @@ export class GestorSimulacion {
     this.cancha.ocuparCancha(this.reloj, nextToEnter);
   }
 
-  generarEventoFinOcupacion(){
-    this.listaGrupos.add({...this.ocupacion});
+  generarEventoFinOcupacion() {
+    this.listaGrupos.add({ ...this.ocupacion });
     this.tiempoFinLimpieza =
-    this.ocupacion.tiempoFinOcupacion +
-    parseFloat((this.tiempoLimpieza / 60).toFixed(5));
+      this.ocupacion.tiempoFinOcupacion +
+      parseFloat((this.tiempoLimpieza / 60).toFixed(5));
     this.ocupacion = null;
   }
 
@@ -213,9 +240,8 @@ export class GestorSimulacion {
   }
 
   calcularPromedios() {
-    const { contFutbol, contBasket, contHandBall } = this.cola.contarDisciplinas(
-      this.reloj
-    );
+    const { contFutbol, contBasket, contHandBall } =
+      this.cola.contarDisciplinas(this.reloj);
     this.calcularPromedio(contFutbol, "futbol");
     this.calcularPromedio(contBasket, "basketball");
     this.calcularPromedio(contHandBall, "handball");
@@ -228,19 +254,14 @@ export class GestorSimulacion {
     const tiempoAnterior = this.simulaciones.at(-1).reloj;
     console.log(cont, this[group.PROM], this[group.CANT]);
     this[group.PROM] = Number(
-      Number(
-        Number(this[group.PROM]) +
-          (this.reloj - tiempoAnterior) * cont
-      ) / cont
+      Number(Number(this[group.PROM]) + (this.reloj - tiempoAnterior) * cont) /
+        cont
     );
     console.log(this[group.PROM]);
   }
 
   validarAbandono() {
-    if (
-      !this.cola.estaLlena(this.triggerAbandono)
-    )
-      return false;
+    if (!this.cola.estaLlena(this.triggerAbandono)) return false;
     this.contadorAbandono += 1;
     return true;
   }
