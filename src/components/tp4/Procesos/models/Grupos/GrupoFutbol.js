@@ -3,8 +3,8 @@ import { generarDistribucionUniforme } from "../../../../tp2/Procesos/CalculoDis
 import { Grupo } from "./Grupo";
 
 export class GrupoFutbol extends Grupo {
-  constructor(reloj, valorTiempo) {
-    super();
+  constructor(reloj, valorTiempo, valorLimpieza) {
+    super(valorLimpieza);
     this.type = "futbol";
     this.rndLlegada = Math.random();
     this.tiempoALlegada = parseFloat(generarDistribucionExponencial(

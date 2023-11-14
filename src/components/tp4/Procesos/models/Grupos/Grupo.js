@@ -1,5 +1,5 @@
 export class Grupo {
-    constructor(){
+    constructor(valorLimpieza){
         this.porLlegar = true;
         this.tiempoEnEspera = 0;
         this.tiempoEntradaCola = null;
@@ -12,6 +12,7 @@ export class Grupo {
         this.tiempoFinOcupacion = 0;
         this.tiempoALlegada = 0;
         this.tiempoLlegada = 0;
+        this.valorLimpieza = valorLimpieza;
     }
 
     generarOcupacion(reloj){

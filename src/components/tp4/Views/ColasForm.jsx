@@ -10,7 +10,10 @@ import Title from "antd/es/typography/Title";
 
 const initialValues = {
   datosGenerales: {
-    tiempoLimpieza: 10,
+    valorLimpiezaFutbol: 100,
+    valorLimpiezaHandBall: 200,
+    valorLimpiezaBasketBall: 300,
+    unidadIntegracion: 1,
     triggerAbandono: 5,
     filas: 100,
     todasFilas: true,
@@ -53,22 +56,9 @@ export const ColasForm = () => {
   const [simulacion, setSimulacion] = useState();
 
   const handleGenerarSimulacion = () => {
-    console.log(valores);
     setSimulacion(generarSimulacion(valores));
   };
 
-  console.log(
-    simulacion?.listaGrupos.cola.map((val) => {
-      const valRounded = {};
-      Object.keys(val).forEach((key) => {
-        valRounded[key] =
-          typeof val[key] === "number"
-            ? parseFloat(val[key].toFixed(5))
-            : val[key];
-      });
-      return valRounded;
-    })
-  );
   return (
     <>
       <div style={{ display: simulacion ? "none" : "" }}>

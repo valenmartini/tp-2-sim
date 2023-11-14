@@ -36,7 +36,6 @@ export const generarFrecuencias = (data, intervalos) => {
         end: interval.end
       };
     });
-    console.log(interval);
     return interval;
   };
   

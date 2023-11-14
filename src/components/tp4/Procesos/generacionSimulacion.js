@@ -4,11 +4,15 @@ export const generarSimulacion = (valores) => {
   let gestorSimulacion = new GestorSimulacion(
     valores.datosGenerales.filas,
     valores.datosGenerales.tiempo,
-    valores.datosGenerales.tiempoLimpieza,
     valores.datosTiempo,
-    valores.datosGenerales.triggerAbandono
+    valores.datosGenerales.triggerAbandono,
+    {
+      valorLimpiezaFutbol: valores.datosGenerales.valorLimpiezaFutbol,
+      valorLimpiezaHandBall: valores.datosGenerales.valorLimpiezaHandBall,
+      valorLimpiezaBasketBall: valores.datosGenerales.valorLimpiezaBasketBall,
+      unidadIntegracion: valores.datosGenerales.unidadIntegracion,
+    }
   );
   gestorSimulacion.iniciarSimulacion();
-  console.log(gestorSimulacion);
   return gestorSimulacion;
 };

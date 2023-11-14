@@ -58,7 +58,6 @@ export const MontecarloForm = () => {
   const [simulacion, setSimulacion] = useState([]);
 
   const generarSimulacion = () => {
-    console.log(valores);
     setSimulacion(generarProcesoSimuacion(valores));
 
     setSimulacionProcesada(true);

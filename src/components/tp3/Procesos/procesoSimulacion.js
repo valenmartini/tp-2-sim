@@ -4,7 +4,6 @@ export const generarProcesoSimuacion = (valores) => {
   const { tirosAcumular, puntajeSuperar } = valores;
   //genero array con las probabilidades conjuntas y sus valores
   const arrayProbabilidadesConjuntas = generarProbabilidadesAcumuladas(valores);
-console.log(arrayProbabilidadesConjuntas);
   //defino variables
   let arrayResultados = [];
   let acumRondas = 0;
@@ -51,7 +50,6 @@ console.log(arrayProbabilidadesConjuntas);
       });
     }
   }
-  console.log(arrayResultados);
   return arrayResultados;
 };
 

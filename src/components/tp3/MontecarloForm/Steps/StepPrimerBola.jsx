@@ -11,8 +11,6 @@ export const StepPrimerBola = (props) => {
   },[])
 
   const handleChange = (e) => {
-    console.log(e.target.value, e.target.name);
-
     props.setValores((prev) => {
       prev.probabilidadesPrimerBola[e.target.name] = Number(e.target.value);
       form.setFieldValue(e.target.name, e.target.value)

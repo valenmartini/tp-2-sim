@@ -15,7 +15,6 @@ export const StepGeneral = (props) => {
       prev[e.target.name] = isBoolean
         ? e.target.checked
         : Number(e.target.value);
-      console.log(prev);
       return prev;
     });
   };

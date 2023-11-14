@@ -53,19 +53,15 @@ export default class Cola {
     this.cola.forEach((grupo) => {
       switch (grupo.type){
         case 'basketball':
-          console.log(reloj,grupo.tiempoLlegada,(reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada));
           acumBasket += (reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada);
           break;
         case 'futbol':
-          console.log(reloj,grupo.tiempoLlegada,(reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada));
           acumFutbol += (reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada);
           break;
         case 'handball':
-          console.log(reloj,grupo.tiempoLlegada,(reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada));
           acumHandBall += (reloj - grupo.tiempoLlegada) - (this.tiempoUltimaAcumulacion - grupo.tiempoLlegada);
       }
     });
-    console.log(this.cola,this.tiempoUltimaAcumulacion, acumBasket, acumFutbol,acumHandBall);
     if(acumBasket < 0 ) acumBasket = 0;
     if(acumFutbol < 0 ) acumFutbol = 0;
     if(acumHandBall < 0 ) acumHandBall = 0;

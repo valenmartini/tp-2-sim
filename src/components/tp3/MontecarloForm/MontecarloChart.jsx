@@ -2,7 +2,7 @@ import React from "react";
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 
 export const MontecarloChart = (props) => {
-    console.log(props.data);
+
   return (
     <LineChart
       width={830}

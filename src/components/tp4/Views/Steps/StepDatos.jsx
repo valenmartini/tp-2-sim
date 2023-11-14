@@ -34,7 +34,6 @@ export const StepDatos = (props) => {
     const [tipo, disciplina, limite] = e.target.name.split("-");
     props.setValores((prev) => {
       prev.datosTiempo[tipo][disciplina][limite] = Number(e.target.value);
-      console.log(prev);
       return prev;
     });
   };

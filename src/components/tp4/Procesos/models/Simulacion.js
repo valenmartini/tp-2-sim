@@ -25,7 +25,9 @@ export class Simulacion {
     promedioEsperaBasketBall = 0,
     contadorAbandono = 0,
     cola = 0,
-    tiempoFinLimpieza = null
+    tiempoFinLimpieza = null,
+    valoresLimpiezaTiempo = null,
+    tiempoLimpieza=null
   ) {
     this.evento = evento;
     this.disciplina = disciplina;
@@ -44,6 +46,8 @@ export class Simulacion {
     this.tiempoALlegarBasketBall = parseNumber(
       llegadaBasketBall.tiempoALlegada
     );
+    this.valoresLimpiezaTiempo = valoresLimpiezaTiempo;
+    this.tiempoLimpieza= tiempoLimpieza? parseNumber(tiempoLimpieza) : null;
     this.tiempoLlegadaFutbol = parseNumber(llegadaFutbol.tiempoLlegada);
     this.tiempoLlegadaHandBall = parseNumber(llegadaHandBall.tiempoLlegada);
     this.tiempoLlegadaBasketBall = parseNumber(llegadaBasketBall.tiempoLlegada);

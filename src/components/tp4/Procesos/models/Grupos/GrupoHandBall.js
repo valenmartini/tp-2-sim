@@ -2,8 +2,8 @@ import { generarDistribucionUniforme } from "../../../../tp2/Procesos/CalculoDis
 import { Grupo } from "./Grupo";
 
 export class GrupoHandBall extends Grupo {
-  constructor(reloj, valoresTiempo) {
-    super();
+  constructor(reloj, valoresTiempo, valorLimpieza) {
+    super(valorLimpieza);
     this.type = "handball";
     this.rndLlegada = Math.random();
     this.tiempoALlegada = parseFloat(

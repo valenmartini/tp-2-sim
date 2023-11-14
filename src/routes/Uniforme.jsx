@@ -13,7 +13,6 @@ export const Uniforme = () => {
   const [frecuencias, setFrecuencias] = useState();
 
   const generarDistribucion = () => {
-    console.log(muestra);
     if (
       muestra <= 1000000 &&
       muestra > 0 &&

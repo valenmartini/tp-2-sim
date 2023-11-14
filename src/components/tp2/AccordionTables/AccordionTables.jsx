@@ -4,7 +4,6 @@ import { TablaResultados } from '../TablasDatos/TablaResultados/TablaResultados'
 import { TablaFrecuencias } from '../TablasDatos/TablaFrecuencias/TablaFrecuencias';
 
 export const AccordionTables = (props) => {
-    console.log(props);
     
 const items = [
     {
