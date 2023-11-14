@@ -74,6 +74,7 @@ export class GestorSimulacion {
     if (this.tiempoFinSimulacion <= this.reloj || this.fila == this.filas)
       evento = new FinSimulacion();
     this.calcularPromedios();
+    this.cancha.acumularTiempoLibre(this.reloj);
     switch (evento.constructor.name) {
       case "Llegada":
         this.generarEventoLlegada();
@@ -107,7 +108,34 @@ export class GestorSimulacion {
     );
     this.tiempoLimpieza = null;
     this.simulaciones.push(simulacion);
-    return simulacion.getNextEvento();
+    let nextEvento = simulacion.getNextEvento();
+
+    if (nextEvento.reloj >= this.tiempoFinSimulacion) {
+      this.reloj = this.tiempoFinSimulacion;
+      this.calcularPromedios();
+      this.cancha.acumularTiempoLibre(this.reloj);
+      simulacion = new Simulacion(
+        new FinSimulacion(),
+        this.tiempoFinSimulacion,
+        this.fila,
+        this.llegadaBasketBall,
+        this.llegadaFutbol,
+        this.llegadaHandBall,
+        null,
+        this.ocupacion,
+        this.cancha.tiempoLibre,
+        this.cancha.tiempoLibreDiario,
+        this.promedioEsperaFutbol,
+        this.promedioEsperaHandBall,
+        this.promedioEsperaBasketBall,
+        this.contadorAbandono,
+        this.cola.getCantidadEnCola(),
+        this.tiempoFinLimpieza
+      );
+      this.simulaciones.push(simulacion);
+      nextEvento = simulacion.getNextEvento();
+    }
+    return nextEvento;
   }
 
   generarEventoInicio() {

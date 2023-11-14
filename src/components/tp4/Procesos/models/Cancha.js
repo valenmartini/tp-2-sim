@@ -8,6 +8,7 @@ export default class Cancha {
   }
 
   acumularTiempoLibre(reloj) {
+    if (this.ocupado) return;
     this.tiempoLibre += Number((reloj - this.ultimoMomentoOcupado).toFixed(5));
     this.tiempoLibreDiario =
       this.tiempoLibre / ((reloj - (reloj % 24)) / 24 + 1);
